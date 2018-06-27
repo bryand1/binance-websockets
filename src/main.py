@@ -12,9 +12,21 @@ import argparse
 import asyncio
 from app import binance, config, util
 import json
+import sys
+import traceback
 import websockets
 
-logger = util.get_logger("binance")
+logger = util.get_logger("main")
+
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    logger.critical("Uncaught exception:%s", traceback.format_exception(exc_type, exc_value, exc_traceback))
+
+
+sys.excepthook = handle_exception
 
 
 async def wss(url):

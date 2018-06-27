@@ -4,8 +4,8 @@ base_endpoint = 'wss://stream.binance.com:9443'
 ticker = 'bnbbtc'
 stream = 'aggTrade'
 
-logfmt = "%(asctime)s %(name)s %(levelname)s %(message)s"
-datefmt = "%Y-%m-%d %H:%M:%S"
+logfmt = "%(asctime)s:%(levelname)s:binance-websockets:%(name)s:%(filename)s:%(lineno)d:%(message)s"
+datefmt = "%Y-%m-%dT%H:%M:%SZ"
 
 database = {
     'connector': '',
