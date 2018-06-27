@@ -1,12 +1,7 @@
 *.py[oc]
 __pycache__
 venv
-id_rsa
-.idea
 *sublime*
-data
-build
-scripts
-scratch
 *.env
-deploy.sh
+.*
+!.gitignore

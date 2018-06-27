@@ -10,10 +10,8 @@ Connect to Binance and capture streaming data
 """
 import argparse
 import asyncio
-import binance
-import config
+from app import binance, config, util
 import json
-import util
 import websockets
 
 logger = util.get_logger("binance")

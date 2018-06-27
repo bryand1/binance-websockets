@@ -1,4 +1,4 @@
-import config
+from app import config
 import logging
 import sys
 import time
