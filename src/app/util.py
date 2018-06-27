@@ -1,4 +1,5 @@
 from app import config
+import datetime
 import logging
 import sys
 import time
@@ -15,3 +16,9 @@ def get_logger(name):
     logger.addHandler(handler)
     logger.propagate = False
     return logger
+
+
+def json_converter(obj):
+    """json.dumps(obj) will fail if obj is not serializable"""
+    if isinstance(obj, datetime.datetime):
+        return obj.__str__()

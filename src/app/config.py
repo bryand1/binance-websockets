@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import os
+
+appdir = os.path.dirname(os.path.abspath(__file__))
+srcdir = os.path.dirname(appdir)
 
 base_endpoint = 'wss://stream.binance.com:9443'
 ticker = 'bnbbtc'

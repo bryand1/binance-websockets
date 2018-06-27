@@ -10,13 +10,16 @@ Connect to Binance and capture streaming data
 """
 import argparse
 import asyncio
-from app import binance, config, util
 import json
+import os
 import sys
 import traceback
+
 import websockets
 
-logger = util.get_logger("main")
+import app
+
+logger = app.util.get_logger("main")
 
 
 def handle_exception(exc_type, exc_value, exc_traceback):
@@ -29,34 +32,22 @@ def handle_exception(exc_type, exc_value, exc_traceback):
 sys.excepthook = handle_exception
 
 
-async def wss(url):
-    """
-    Connect and consume data
-    :param url: Binance web socket stream endpoint
-    :return:
-    """
-    async with websockets.connect(url) as websocket:
-        logger.debug("Connected to %s", url)
-        while True:
-            msg = await websocket.recv()
-            await consume(msg)
-
-
-async def consume(msg):
-    data = {mapping[k]: v for k, v in json.loads(msg).items()}
-    logger.info(data)
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--endpoint', type=str, default=config.base_endpoint)
-    parser.add_argument('--ticker', type=str, default=config.ticker)
-    parser.add_argument('--stream', type=str, default=config.stream)
+    parser.add_argument('--endpoint', type=str, default=app.config.base_endpoint)
+    parser.add_argument('--ticker', type=str, default=app.config.ticker)
+    parser.add_argument('--stream', type=str, default=app.config.stream)
     args = parser.parse_args()
 
+    with open(os.path.join(app.config.srcdir, 'config.json')) as fp:
+        conf = json.load(fp)
+
     stream_url = "{}/ws/{}@{}".format(args.endpoint, args.ticker, args.stream)
-    mapping = binance.wss.get_map(args.stream)
+    logger.info("stream_url = %r", stream_url)
+
+    mapping = app.binance.wss.get_map(args.stream)
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(wss(stream_url))
+    loop.run_until_complete(app.configure(conf['rabbitmq']))
+    loop.run_until_complete(app.wss(stream_url, mapping))
     loop.close()
