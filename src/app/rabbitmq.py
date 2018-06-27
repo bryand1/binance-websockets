@@ -38,13 +38,6 @@ class RabbitMQ:
         await self.connect()
         await self.set_qos(prefetch_count=prefetch_count)
 
-    # async def publish(self, message: aio_pika.Message, routing_key):
-    #     await self.exchange.publish(message, routing_key)
-
-    # async def publish_many(self, messages: Iterator, routing_key):
-    #     for message in messages:
-    #         await self.exchange.publish(message, routing_key)
-
     @staticmethod
     def to_rmq_message(data, headers=None):
         if isinstance(data, bytes):

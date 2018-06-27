@@ -9,22 +9,21 @@ rmq = None
 exchange = None
 
 
-async def configure(rabbitmq_conf):
+async def configure(rabbitmq_conf: dict) -> None:
     global rmq, exchange
     rmq = rabbitmq.RabbitMQ(rabbitmq_conf)
-    queues = ('mysql', 'elasticsearch')
     await rmq.configure()
     exchange = await rmq.create_exchange('binance', type='fanout', durable=True)
-    for queue_name in queues:
-        queue = await rmq.create_queue(queue_name, durable=True)
-        await queue.bind(exchange, '')
+    for name in ('mysql', 'elasticsearch'):
+        queue = await rmq.create_queue(name, durable=True)
+        await queue.bind(exchange)
 
 
-async def wss(url, mapping):
+async def wss(url: str, mapping: dict) -> None:
     """
     Connect and consume data
     :param url: Binance web socket stream endpoint
-    :param dict: map for reading json document
+    :param mapping: map for reading json document
     :return:
     """
     global exchange

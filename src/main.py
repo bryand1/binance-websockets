@@ -15,8 +15,6 @@ import os
 import sys
 import traceback
 
-import websockets
-
 import app
 
 logger = app.util.get_logger("main")
@@ -40,7 +38,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(os.path.join(app.config.srcdir, 'config.json')) as fp:
-        conf = json.load(fp)
+        conf = json.load(fp)['rabbitmq']
 
     stream_url = "{}/ws/{}@{}".format(args.endpoint, args.ticker, args.stream)
     logger.info("stream_url = %r", stream_url)
@@ -48,6 +46,6 @@ if __name__ == '__main__':
     mapping = app.binance.wss.get_map(args.stream)
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(app.configure(conf['rabbitmq']))
+    loop.run_until_complete(app.configure(conf))
     loop.run_until_complete(app.wss(stream_url, mapping))
     loop.close()
