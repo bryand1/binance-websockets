@@ -18,8 +18,11 @@ database = {
 }
 
 tickers = {
-    'bnbbtc',
-    'ethbtc'
+    'ethbtc',
+    'ethusdt',
+    'ltceth',
+    'ltcusdt',
+    'btcusdt'
 }
 
 coins = {
@@ -27,4 +30,5 @@ coins = {
     'eth': 'Ethereum',
     'ltc': 'Litecoin',
     'bnb': 'Binance Coin',
+    'usdt': 'Tether'
 }

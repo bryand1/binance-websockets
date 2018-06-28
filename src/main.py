@@ -24,7 +24,7 @@ def handle_exception(exc_type, exc_value, exc_traceback):
     if issubclass(exc_type, KeyboardInterrupt):
         sys.__excepthook__(exc_type, exc_value, exc_traceback)
         return
-    logger.critical("Uncaught exception:%s", traceback.format_exception(exc_type, exc_value, exc_traceback))
+    logger.critical("Uncaught exception:%s", exc_info=(exc_type, exc_value, exc_traceback))
 
 
 sys.excepthook = handle_exception
@@ -40,12 +40,18 @@ if __name__ == '__main__':
     with open(os.path.join(app.config.srcdir, 'config.json')) as fp:
         conf = json.load(fp)['rabbitmq']
 
-    stream_url = "{}/ws/{}@{}".format(args.endpoint, args.ticker, args.stream)
-    logger.info("stream_url = %r", stream_url)
+    # wss://stream.binance.com:9443/ws/bnbbtc@aggTrade
+    endpoint_from_args = "{}/ws/{}@{}".format(args.endpoint, args.ticker, args.stream)
+    endpoint = os.environ.get('ENDPOINT', '') or endpoint_from_args
+    stream = endpoint[endpoint.rfind('@') + 1:]
+    index = stream.find('_')
+    stream = stream[:index] if index > -1 else stream
+    logger.info("endpoint = %r", endpoint)
+    logger.info("stream = %r", stream)
 
-    mapping = app.binance.wss.get_map(args.stream)
+    mapping = app.binance.wss.get_map(stream)
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(app.configure(conf))
-    loop.run_until_complete(app.wss(stream_url, mapping))
+    loop.run_until_complete(app.wss(endpoint, mapping))
     loop.close()
