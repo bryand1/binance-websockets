@@ -28,5 +28,6 @@ source ./binance.env
 docker run -d --rm --net crypto --mount type=bind,src="$(pwd)"/src,dst=/usr/src \
   -e BINANCE_APIKEY="${BINANCE_APIKEY}" \
   -e BINANCE_SECRET="${BINANCE_SECRET}" \
+  -e RABBITMQ_ERLANG_COOKIE="${RABBITMQ_ERLANG_COOKIE}" \
   -e ENDPOINT="$1" \
   python:3.6.5 sh -c 'cd /usr/src; pip install --no-cache-dir -r requirements.txt && python main.py'
