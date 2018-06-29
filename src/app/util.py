@@ -7,11 +7,11 @@ import time
 
 def get_logger(name):
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(config.loglvl)
     formatter = logging.Formatter(config.logfmt, datefmt=config.datefmt)
     formatter.converter = time.gmtime
     handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
+    handler.setLevel(config.loglvl)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.propagate = False

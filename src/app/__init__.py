@@ -3,7 +3,7 @@ from typing import Dict
 
 from aio_pika import ExchangeType
 
-from . import binance, config, rabbitmq, util, websocketclient
+from . import binance, config, rabbitmq, storage, util, websocketclient
 
 logger = util.get_logger("app")
 
