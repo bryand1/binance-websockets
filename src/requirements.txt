@@ -1,11 +1,17 @@
 aio-pika==0.9.7
+aiohttp==3.3.2
 aiomysql==0.0.9
 asn1crypto==0.24.0
+async-timeout==3.0.0
 atomicwrites==1.1.5
 attrs==18.1.0
 cffi==1.11.5
+chardet==3.0.4
 cryptography==2.2.2
+elasticsearch==6.3.0
+elasticsearch-async==6.1.0
 idna==2.7
+idna-ssl==1.0.1
 more-itertools==4.2.0
 multidict==4.3.1
 pika==0.10.0
@@ -16,5 +22,6 @@ PyMySQL==0.8.1
 pytest==3.6.2
 shortuuid==0.5.0
 six==1.11.0
+urllib3==1.23
 websockets==4.0.1
 yarl==1.2.6
