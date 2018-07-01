@@ -9,7 +9,7 @@ base_endpoint = 'wss://stream.binance.com:9443'
 ticker = 'bnbbtc'
 stream = 'aggTrade'
 
-loglvl = logging.DEBUG
+loglvl = logging.INFO
 logfmt = "%(asctime)s:%(levelname)s:binance-websockets:%(name)s:%(filename)s:%(lineno)d:%(message)s"
 datefmt = "%Y-%m-%dT%H:%M:%SZ"
 

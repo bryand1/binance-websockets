@@ -16,6 +16,7 @@ import sys
 import traceback
 
 from aio_pika import ExchangeType, IncomingMessage
+from elasticsearch_async import AsyncElasticsearch
 
 import app
 
@@ -63,13 +64,18 @@ async def mysql():
 async def es():
     global queue
 
-    # db = await app.storage.es.Database.connect(conf['elasticsearch'])
-    # async def consumer(message: IncomingMessage):
-    #     entry = json.loads(message.body.decode('utf-8')
-    #     await db.save(entry)
-    #     message.ack()
+    client = AsyncElasticsearch(hosts=conf['elasticsearch']['hosts'])
 
-    # queue['elasticsearch'].consume(callback=consumer)
+    async def consumer(message: IncomingMessage):
+        entry = json.loads(message.body.decode('utf-8'))
+        if '_ignore' in entry:
+            del entry['_ignore']
+        index = app.storage.es.index_conv.get(entry['eventType'], entry['eventType'])
+        await client.index(index, doc_type='_doc', body=entry)
+        logger.info(entry)
+        message.ack()
+
+    queue['elasticsearch'].consume(callback=consumer)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

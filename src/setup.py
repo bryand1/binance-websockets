@@ -15,6 +15,8 @@ import os
 import sys
 import traceback
 
+from elasticsearch_async import AsyncElasticsearch
+
 import app
 
 logger = app.util.get_logger("setup")
@@ -30,33 +32,17 @@ def handle_exception(exc_type, exc_value, exc_traceback):
 sys.excepthook = handle_exception
 
 
-async def mysql():
-    raise NotImplementedError
-
-
-async def es():
-    db = app.storage.es.Database(conf['elasticsearch'])
-
-    info = await db.client.info()
-    print(info)
-
-    # async def consumer(message: IncomingMessage):
-    #     entry = json.loads(message.body.decode('utf-8')
-    #     await db.save(entry)
-    #     message.ack()
-
-    # queue['elasticsearch'].consume(callback=consumer)
-
-    await db.close()
+async def main():
+    client = AsyncElasticsearch(hosts=conf['elasticsearch']['hosts'])
+    indices = ('trade',)
+    for index in indices:
+        await client.indices.create(index, body=app.storage.es.body[index])
+    await client.transport.close()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--store", type=str, default="es")
-    args = parser.parse_args()
-
     with open(os.path.join(app.config.srcdir, 'config.json')) as fp:
         conf = json.load(fp)
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(locals()[args.store]())
+    loop.run_until_complete(main())
     loop.close()

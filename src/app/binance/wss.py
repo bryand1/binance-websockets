@@ -154,7 +154,7 @@ kline = {
     "V": "takerBuyBaseAssetVolume",
     "Q": "takerBuyQuoteAssetVolume",
     "B": "_ignore"
-  }
+}
 
 """
 Individual symbol ticker streams
@@ -166,14 +166,6 @@ Stream Name: <symbol>@ticker
 Payload:
 
 {
-  "e": "24hrTicker",  // Event type
-  "E": 123456789,     // Event time
-  "s": "BNBBTC",      // Symbol
-  "p": "0.0015",      // Price change
-  "P": "250.00",      // Price change percent
-  "w": "0.0018",      // Weighted average price
-  "x": "0.0009",      // Previous day's close price
-  "c": "0.0025",      // Current day's close price
   "Q": "10",          // Close trade's quantity
   "b": "0.0024",      // Best bid price
   "B": "10",          // Best bid quantity
