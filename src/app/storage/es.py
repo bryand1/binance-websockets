@@ -88,7 +88,7 @@ body = {
                         "type": "date",
                         "format": "epoch_millis"
                     },
-                    "klineInterval": "term",
+                    "klineInterval": {"type": "keyword"},
                     "firstTradeId": {"type": "integer"},
                     "lastTradeId": {"type": "integer"},
                     "openPrice": {"type": "double"},
@@ -151,20 +151,3 @@ body = {
         }
     }
 }
-
-
-class Database:
-    logger = util.get_logger('app.storage.es.Database')
-
-    def __init__(self, config: Dict):
-        self.client = AsyncElasticsearch(hosts=config['hosts'])
-
-    async def save(self, entry: Dict):
-        if '_ignore' in entry:
-            del entry['_ignore']
-        # Select index based on eventType
-        del entry['eventType']
-        # Store in elasticsearch
-
-    async def close(self):
-        await self.client.transport.close()

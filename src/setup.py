@@ -8,7 +8,6 @@ Configure databases to accept binance rates
 
 Save data from RabbitMQ to permanent storage
 """
-import argparse
 import asyncio
 import json
 import os
@@ -34,9 +33,8 @@ sys.excepthook = handle_exception
 
 async def main():
     client = AsyncElasticsearch(hosts=conf['elasticsearch']['hosts'])
-    indices = ('trade',)
-    for index in indices:
-        await client.indices.create(index, body=app.storage.es.body[index])
+    for index in conf['elasticsearch']['indices']:
+        await client.indices.create(index, body=app.storage.es.body.get(index))
     await client.transport.close()
 
 if __name__ == '__main__':
