@@ -15,8 +15,8 @@
 # ltcusdt
 # btcusdt
 
-if [[ -z "$1" ]]; then
-  printf "usage: ./docker-run.sh endpoint\n\n"
+if [[ -z "$2" ]]; then
+  printf "usage: ./docker-run.sh container-name endpoint\n\n"
   printf "Binance websocket endpoint example:\n"
   printf "wss://stream.binance.com:9443/ws/ethbtc@aggTrade\n\n"
   exit 1
@@ -25,9 +25,9 @@ fi
 cd "$(dirname "${BASH_SOURCE[0]}")"
 source ./binance.env
 
-docker run -d --rm --net crypto --mount type=bind,src="$(pwd)"/src,dst=/usr/src \
+sudo docker run -d --name "$1" --rm --net crypto --mount type=bind,src="$(pwd)"/src,dst=/usr/src \
   -e BINANCE_APIKEY="${BINANCE_APIKEY}" \
   -e BINANCE_SECRET="${BINANCE_SECRET}" \
   -e RABBITMQ_ERLANG_COOKIE="${RABBITMQ_ERLANG_COOKIE}" \
-  -e ENDPOINT="$1" \
+  -e ENDPOINT="$2" \
   python:3.6.5 sh -c 'cd /usr/src; pip install --no-cache-dir -r requirements.txt && python main.py'

@@ -95,7 +95,6 @@ body = {
                     "closePrice": {"type": "double"},
                     "highPrice": {"type": "double"},
                     "lowPrice": {"type": "double"},
-                    "quantity": {"type": "integer"},
                     "baseAssetVolume": {"type": "integer"},
                     "numberOfTrades": {"type": "integer"},
                     "isKlineClosed": {"type": "boolean"},
