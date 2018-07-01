@@ -80,8 +80,10 @@ if __name__ == '__main__':
     loop.close()
     logger.info("%d actions retrieved", len(actions))
 
-    logger.info("Connecting to elasticsearch")
-    client = Elasticsearch(hosts=['elasticsearch'])
-    ret = helpers.bulk(client, actions)
-    logger.info("%r", ret)
+    if actions:
+        logger.info("Connecting to elasticsearch")
+        client = Elasticsearch(hosts=['elasticsearch'])
+        ret = helpers.bulk(client, actions)
+        logger.info("%r", ret)
+
     logger.info("Execution time: %.2f seconds", time.time() - start_time)
