@@ -66,16 +66,18 @@ async def es():
 
     client = AsyncElasticsearch(hosts=conf['elasticsearch']['hosts'])
 
-    async def consumer(message: IncomingMessage):
+    while True:
+        try:
+            message = await queue['elasticsearch'].get(timeout=1)
+        except TimeoutError:
+            continue
         entry = json.loads(message.body.decode('utf-8'))
         if '_ignore' in entry:
             del entry['_ignore']
         index = app.storage.es.index_conv.get(entry['eventType'], entry['eventType'])
         await client.index(index, doc_type='_doc', body=entry)
-        logger.info(entry)
         message.ack()
 
-    queue['elasticsearch'].consume(callback=consumer)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
