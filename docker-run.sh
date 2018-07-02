@@ -30,4 +30,4 @@ sudo docker run -d --name "$1" --rm --net crypto --mount type=bind,src="$(pwd)"/
   -e BINANCE_SECRET="${BINANCE_SECRET}" \
   -e RABBITMQ_ERLANG_COOKIE="${RABBITMQ_ERLANG_COOKIE}" \
   -e ENDPOINT="$2" \
-  python:3.6.5 sh -c 'cd /usr/src; pip install --no-cache-dir -r requirements.txt && python main.py'
+  python:3.6.5 sh -c 'cd /usr/src; pip install --quiet --no-cache-dir -r requirements.txt && python main.py'
