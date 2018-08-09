@@ -1,6 +1,6 @@
 # Binance Python Web Sockets
 
-Note: Work in progress. Currently, main.py script logs web socket stream to stdout.
+Capture Binance websocket streams in Docker containers.
 
 ## Objective
 
@@ -28,9 +28,5 @@ Edit *src/config.py*, find the variable *database*.
 Run the script:
 
 ```bash
-./run.sh
+./docker-run.sh [container-name] [endpoint]
 ```
-
-## Implementation Notes
-
-Work in progress.
