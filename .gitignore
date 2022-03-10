@@ -1,9 +1,0 @@
-*.py[oc]
-__pycache__
-venv
-*sublime*
-*.env
-config.json
-rabbit.py
-.*
-!.gitignore
