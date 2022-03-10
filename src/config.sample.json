@@ -1,9 +1,0 @@
-{
-  "database": {},
-  "rabbitmq": {
-    "host": "",
-    "login": "",
-    "password": "",
-    "virtualhost": ""
-  }
-}
